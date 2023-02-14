@@ -19,7 +19,6 @@ public class TruckDtoAssembler {
     private ModelMapper modelMapper;
 
     public TruckDTO toModel(Truck truck) {
-        log.info(truck.getDescription());
         return modelMapper.map(truck, TruckDTO.class);
     }
 

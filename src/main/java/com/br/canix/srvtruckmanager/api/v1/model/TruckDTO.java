@@ -17,4 +17,6 @@ public class TruckDTO {
 
     private String year;
 
+    private boolean enabled;
+
 }

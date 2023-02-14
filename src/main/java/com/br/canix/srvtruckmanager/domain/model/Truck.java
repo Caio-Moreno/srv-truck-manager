@@ -24,6 +24,7 @@ public class Truck {
     private String brand;
 
     private String year;
+    private boolean enabled;
 
     @OneToMany(mappedBy = "truck", fetch = FetchType.LAZY)
     private List<Note> notes = new ArrayList<>();
