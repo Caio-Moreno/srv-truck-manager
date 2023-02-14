@@ -1,10 +1,12 @@
 package com.br.canix.srvtruckmanager.domain.service.impl;
 
+import com.br.canix.srvtruckmanager.domain.exception.BusinessException;
 import com.br.canix.srvtruckmanager.domain.model.Note;
 import com.br.canix.srvtruckmanager.domain.repository.NoteRepository;
 import com.br.canix.srvtruckmanager.domain.service.NoteService;
 import com.br.canix.srvtruckmanager.domain.service.TruckService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +21,19 @@ public class NoteServiceImpl implements NoteService {
 
     @Transactional
     @Override
-    public void addNote(Long truckId, Note note) {
-        var truck = truckService.getById(truckId);
+    public void addNote(Note note) {
+        var truck = truckService.getById(note.getTruck().getId());
         note.setTruck(truck);
-        note = repo.save(note);
+        repo.save(note);
+    }
 
-
-        truck.addNote(note);
+    @Transactional
+    @Override
+    public void removeNote(Long noteId) {
+        try {
+            repo.deleteById(noteId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new BusinessException(e.getMessage(), e);
+        }
     }
 }

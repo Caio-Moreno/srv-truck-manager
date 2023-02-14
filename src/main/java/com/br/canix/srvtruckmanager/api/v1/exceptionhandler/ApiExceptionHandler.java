@@ -1,5 +1,6 @@
 package com.br.canix.srvtruckmanager.api.v1.exceptionhandler;
 
+import com.br.canix.srvtruckmanager.domain.exception.BusinessException;
 import com.br.canix.srvtruckmanager.domain.exception.TruckNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +38,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<?> handleBusinessException(BusinessException ex, WebRequest request) {
+        var status = HttpStatus.NOT_FOUND;
+        var problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
+        var detail = ex.getMessage();
+
+        var problem = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {

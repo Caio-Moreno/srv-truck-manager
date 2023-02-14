@@ -1,7 +1,6 @@
 package com.br.canix.srvtruckmanager.api.v1.controller;
 
 import com.br.canix.srvtruckmanager.api.v1.assembler.NoteDtoAssembler;
-import com.br.canix.srvtruckmanager.api.v1.model.NoteDTO;
 import com.br.canix.srvtruckmanager.domain.model.Note;
 import com.br.canix.srvtruckmanager.domain.service.NoteService;
 import com.br.canix.srvtruckmanager.domain.service.TruckService;
@@ -9,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(path = "/v1/truck/{idTruck}/note")
+@RequestMapping(path = "/v1/note")
 public class NoteController {
 
     @Autowired
@@ -24,17 +21,17 @@ public class NoteController {
     @Autowired
     private NoteDtoAssembler assembler;
 
-    @GetMapping
-    public List<NoteDTO> getAllByTruck(@PathVariable Long idTruck) {
-        var truck = truckService.getById(idTruck);
 
-        return assembler.toCollectionModel(truck.getNotes());
+    @PostMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void insert(@RequestBody Note note) {
+        service.addNote(note);
     }
 
-    @PutMapping
+    @DeleteMapping("/{idNote}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void insert(@PathVariable Long idTruck, @RequestBody Note note) {
-        service.addNote(idTruck, note);
+    public void delete(@PathVariable Long idNote) {
+        service.removeNote(idNote);
     }
 
 

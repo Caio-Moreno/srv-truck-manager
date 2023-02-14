@@ -5,6 +5,8 @@ import com.br.canix.srvtruckmanager.domain.model.Note;
 
 public interface NoteService {
 
-    void addNote(Long truckId, Note note);
+    void addNote(Note note);
+
+    void removeNote(Long noteId);
 
 }
