@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,8 +25,12 @@ public class Truck {
 
     private String year;
 
-    @OneToMany(mappedBy = "truck")
-    private List<Note> notes;
+    @OneToMany(mappedBy = "truck", fetch = FetchType.LAZY)
+    private List<Note> notes = new ArrayList<>();
+
+    public boolean addNote(Note note) {
+        return this.notes.add(note);
+    }
 
 
 }

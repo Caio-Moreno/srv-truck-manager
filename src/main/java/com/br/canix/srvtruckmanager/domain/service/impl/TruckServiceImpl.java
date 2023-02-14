@@ -25,4 +25,9 @@ public class TruckServiceImpl implements TruckService {
         return repo.findById(id)
                 .orElseThrow(() -> new TruckNotFoundException(id));
     }
+
+    @Override
+    public Truck save(Truck truck) {
+        return repo.save(truck);
+    }
 }

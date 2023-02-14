@@ -1,10 +1,11 @@
 package com.br.canix.srvtruckmanager.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
@@ -14,13 +15,14 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "note")
-    private List<Information> information;
+    private String description;
+
 
     @ManyToOne
     @JoinColumn(name = "truck_id", nullable = false)
     private Truck truck;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date date;
 
 

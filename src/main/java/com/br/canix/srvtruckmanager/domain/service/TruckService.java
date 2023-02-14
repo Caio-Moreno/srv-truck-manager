@@ -10,4 +10,6 @@ public interface TruckService {
 
     Truck getById(Long id);
 
+    Truck save(Truck truck);
+
 }

@@ -1,12 +1,13 @@
 package com.br.canix.srvtruckmanager.api.v1.controller;
 
-import com.br.canix.srvtruckmanager.domain.model.Truck;
+import com.br.canix.srvtruckmanager.api.v1.assembler.TruckDtoAssembler;
+import com.br.canix.srvtruckmanager.api.v1.assembler.TruckInputDisassembler;
+import com.br.canix.srvtruckmanager.api.v1.model.TruckDTO;
+import com.br.canix.srvtruckmanager.api.v1.model.input.TruckInputDTO;
 import com.br.canix.srvtruckmanager.domain.service.TruckService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,14 +18,29 @@ public class TruckController {
     @Autowired
     private TruckService service;
 
+    @Autowired
+    private TruckInputDisassembler truckInputDisassembler;
+
+    @Autowired
+    private TruckDtoAssembler truckDtoAssembler;
+
+
     @GetMapping
-    public List<Truck> getAll() {
-        return service.getAll();
+    public List<TruckDTO> getAll() {
+        return truckDtoAssembler.toCollectionModel(service.getAll());
     }
 
     @GetMapping("/{truckId}")
-    public Truck getById(@PathVariable Long truckId) {
-        return service.getById(truckId);
+    public TruckDTO getById(@PathVariable Long truckId) {
+        return truckDtoAssembler.toModel(service.getById(truckId));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TruckDTO insert(@RequestBody TruckInputDTO truckInputDTO) {
+        var truck = truckInputDisassembler.toDomainObject(truckInputDTO);
+
+        return truckDtoAssembler.toModel(service.save(truck));
     }
 
 }

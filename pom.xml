@@ -14,7 +14,8 @@
 	<name>srv-truck-manager</name>
 	<description>Gerenciamento de caminhões</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>12</java.version>
+		<modelmapper.version>2.3.0</modelmapper.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -59,6 +60,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>${modelmapper.version}</version>
 		</dependency>
 	</dependencies>
 
